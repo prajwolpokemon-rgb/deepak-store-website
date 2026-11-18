@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="google-site-verification" content="iVCx-fVp5qBqRzBvdgCa0fyYQx3toTcw4LlCNsBsQdQ" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a1020"><title>DEEPAK STORE | Free Fire Top Up Center</title><meta name="description" content="DEEPAK STORE offers Free Fire top-up packages for Bangladesh server players. Explore available packages, payment information and order tracking."><meta name="robots" content="index, follow"><meta property="og:title" content="DEEPAK STORE | Free Fire Top Up Center">
+<meta property="og:description" content="Explore Free Fire Bangladesh server top-up packages at DEEPAK STORE.">
+<meta property="og:type" content="website"><link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-mark">D</span><span>DEEPAK STORE<small>TOP-UP CENTER</small></span></a>
+  <div class="top-actions"><span class="pill">🇧🇩 BANGLADESH SERVER</span><button class="btn ghost" id="authOpen">Login / Sign up</button><button class="btn ghost hidden" id="logoutBtn">Logout</button></div>
+</header>
+<main>
+<section class="hero">
+ <div class="eyebrow">WELCOME TO</div>
+ <h1 class="store-title">DEEPAK STORE</h1>
+ <div class="topup-title">TOP-UP CENTER</div>
+ <p>Bangladesh server Free Fire top-up. Choose your package, enter your game details, scan our eSewa QR and upload your payment screenshot.</p>
+ <div class="hero-tags"><span>🇧🇩 Bangladesh Server Only</span><span>✓ Secure order review</span><span>✓ eSewa QR Payment</span></div>
+</section>
+<section class="section-head"><div><div class="eyebrow">STORE</div><h2>Choose Your Package</h2></div><button class="btn outline" id="refreshBtn">Refresh</button></section>
+<div id="packageGrid" class="grid"><div class="empty">Loading packages…</div></div>
+
+<section class="panel order-panel" id="orderSection">
+ <div class="eyebrow">BANGLADESH SERVER ONLY</div><h2>Top-up details</h2>
+ <form id="orderForm">
+  <div class="form-grid">
+   <label>Selected package<select id="packageSelect" required><option value="">Select a package above</option></select></label>
+   <label>Free Fire Player UID<input id="uid" inputmode="numeric" pattern="[0-9]{6,15}" placeholder="Enter Player UID" required></label>
+   <label>FF Name<input id="customerName" placeholder="Enter your Free Fire name" maxlength="80" required></label>
+   <input id="server" type="hidden" value="Bangladesh">
+  </div>
+  <div class="payment-box"><h3>My QR — eSewa</h3><p>Scan this QR code and pay the exact package amount.</p>
+   <img id="qrPreview" class="qr" src="assets/esewa-qr.png" alt="DEEPAK STORE eSewa QR code">
+   <div class="qr-owner"><small>eSewa QR</small></div>
+   <label class="full">Upload payment screenshot <span class="required">*</span><input id="paymentFile" type="file" accept="image/png,image/jpeg,image/webp" required></label>
+  </div>
+  <button class="btn primary wide" type="submit">Submit order</button>
+  <p class="muted small">Never share your Facebook password, game password or OTP. Order will be processed after payment screenshot verification.</p>
+  <div id="orderMessage" class="message" aria-live="polite"></div>
+ </form>
+</section>
+
+<section class="panel track-panel">
+ <div class="eyebrow">TRACKING</div><h2>Track your order</h2>
+ <form id="trackForm" class="track-form"><label>Order ID<input id="trackId" placeholder="Your order ID" required></label><button class="btn outline">Track</button></form>
+ <div id="trackResult" class="message"></div>
+</section>
+
+<section id="adminSection" class="admin-wrap hidden">
+ <div class="section-head"><div><div class="eyebrow">PRIVATE AREA</div><h2>Admin dashboard</h2><p class="muted small">Visible only to authorized admin accounts.</p></div><button class="btn outline" id="adminRefresh">Refresh data</button></div>
+ <div class="stats" id="stats"></div>
+ <div class="admin-tabs"><button class="tab active" data-tab="ordersTab">Orders</button><button class="tab" data-tab="packagesTab">Packages</button><button class="tab" data-tab="settingsTab">Settings</button></div>
+ <div id="ordersTab" class="tab-panel"><h3>Customer orders</h3><div class="table-wrap"><table><thead><tr><th>Order</th><th>Customer / UID</th><th>Package</th><th>Payment</th><th>Status</th><th>Action</th></tr></thead><tbody id="ordersBody"></tbody></table></div></div>
+ <div id="packagesTab" class="tab-panel hidden"><h3>Manage packages</h3><form id="packageForm" class="admin-form"><input id="editPackageId" type="hidden"><label>Package name<input id="pkgName" required maxlength="100"></label><label>Diamonds / details<input id="pkgDetails" maxlength="120"></label><label>Price (NPR)<input id="pkgPrice" type="number" min="1" step="1" required></label><label>Badge<input id="pkgBadge" maxlength="30" placeholder="POPULAR (optional)"></label><button class="btn primary">Save package</button><button class="btn ghost" type="button" id="cancelEdit">Cancel</button></form><div id="adminPackages" class="admin-list"></div></div>
+ <div id="settingsTab" class="tab-panel hidden"><h3>Store settings</h3><form id="settingsForm" class="admin-form"><label>Support WhatsApp number (country code + digits)<input id="settingWhatsapp" placeholder="97798XXXXXXXX"></label><label>Support email<input id="settingEmail" type="email"></label><label>eSewa QR image<input id="settingQr" type="file" accept="image/png,image/jpeg,image/webp"></label><button class="btn primary">Save settings</button></form><p class="muted small">Notifications need the optional Edge Function and provider secrets described in README.</p></div>
+</section>
+</main>
+<footer><b>DEEPAK STORE</b> · Independent reseller store. Not affiliated with Garena.<br><span class="muted">Support: <a id="supportLink" href="#">Contact store</a></span></footer>
+
+<div class="modal hidden" id="authModal"><div class="modal-card"><button class="close" id="authClose">×</button><div class="eyebrow">ACCOUNT</div><h2>Login / Sign up</h2>
+ <div class="auth-tabs"><button class="tab active" data-auth="password">Email & password</button><button class="tab" data-auth="phone">Phone OTP</button></div>
+ <div id="passwordAuth"><label>Email<input id="authEmail" type="email" autocomplete="email"></label><label>Password<input id="authPassword" type="password" autocomplete="current-password"></label><div class="row"><button class="btn primary" id="emailLogin">Login</button><button class="btn outline" id="emailSignup">Create account</button></div><button class="btn ghost wide" id="googleLogin">Continue with Google</button></div>
+ <div id="phoneAuth" class="hidden"><label>Phone number (include country code)<input id="phoneNumber" placeholder="+97798XXXXXXXX"></label><button class="btn primary wide" id="sendOtp">Send OTP</button><label>OTP code<input id="otpCode" inputmode="numeric" placeholder="6-digit code"></label><button class="btn outline wide" id="verifyOtp">Verify OTP</button></div>
+ <div id="authMessage" class="message"></div><p class="muted small">Google and phone OTP must be enabled in your Supabase Auth settings before use.</p>
+</div></div>
+<script src="config.js"></script><script src="app.js"></script>
+</body></html>
